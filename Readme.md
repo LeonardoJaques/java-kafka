@@ -82,50 +82,65 @@ Projeto de Estudo/
 └── docker-compose.yml
 ```
 
+## Diagrama de Relação Java Spring Boot e Kafka
+
+[![Diagrama de Relação Java Spring Boot e Kafka - Mostra como os componentes se conectam através do Kafka](https://github.com/LeonardoJaques/java-kafka/blob/main/como_relacionar_Java_Spring_Boot%20_Kafka.drawio.png)](https://github.com/LeonardoJaques/java-kafka/blob/main/como_relacionar_Java_Spring_Boot%20_Kafka.drawio.png)
+
+
+
+
 ### Diagrama de classes
 
 ```mermaid
 classDiagram
-class User {
--String id
--String name
--Account account
--Feature[] features
--Card card
--News[] news
+class MobileClient {
+  -makeRequest()
+  -receiveResponse()
 }
 
-class Account {
--String id
--String number
--String agency
--Float balance
--Float limit
+class Monolito {
+  -Controller()
+  -Consult()
+  -Registers()
+  -Update()
+  -Delete()
 }
 
-class Feature {
--String id
--String icon
--String description
+class Microsservico {
+  -handleRequest()
+  -publishEvent()
+  -consumeEvent()
 }
 
-class Card {
--String id
--String number
--Float limit
+class Kafka {
+  -publish()
+  -subscribe()
 }
 
-class News {
--String id
--String icon
--String description
+class Logs {
+  -logEvent()
 }
 
-User "1" *-- "1" Account
-User "1" *-- "N" Feature
-User "1" *-- "1" Card
-User "1" *-- "N" News
+class Auditoria {
+  -auditEvent()
+}
 
+class Redis {
+  -cacheData()
+  -retrieveData()
+}
+
+class ServicoRecebimento {
+  -processResponse()
+}
+
+MobileClient <--> Monolito: API Rest
+MobileClient <--> Microsservico: API Rest
+Microsservico <--> Kafka: Barramento de eventos
+Kafka --> Logs: Tópicos
+Kafka --> Auditoria: Tópicos
+Microsservico <--> Redis: Cache
+Microsservico <--> ServicoRecebimento
 ```
 
 ### Contribuições
